@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="container">
+        <img src="https://raw.githubusercontent.com/Lana-Franks-Code/qrcodescanner/main/Allan%20Gray%20Makers_Logo_small.png" class="logo">
+        <br>
+        <h1>QR Code Scanner</h1>
+        <button id="startButton" onclick="startScan()">Start</button>
+        <button id="quitButton" onclick="stopScan()">Stop</button>
+        <br>
+        <br>
+        <div id="message"></div>
+    </div>
+
+    <script>
+
+
+        function startScan() {
+            fetch("/start_scan")
+            .then(response => {
+                if (response.ok) {
+                    console.log("Scanning started.");
+                } else {
+                    console.error("Failed to start scanning.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        }
+
+        function stopScan() {
+            fetch("/stop_scan")
+            .then(response => {
+                if (response.ok) {
+                    console.log("Scanning stopped.");
+                } else {
+                    console.error("Failed to stop scanning.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        }
+
+        function updateMessage(message) {
+            document.getElementById("message").innerText = message;
+        }
+
+        // Function to continuously update message
+        function updateMessageContinuously() {
+            setInterval(() => {
+                fetch("/get_message")
+                .then(response => response.text())
+                .then(message => {
+                    updateMessage(message);
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+            }, 1000); // Update message every second
+        }
+
+        updateMessageContinuously(); // Start continuous message updating
+    </script>
+</body>
+</html>
