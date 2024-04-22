@@ -11,15 +11,19 @@
         <img src="https://raw.githubusercontent.com/Lana-Franks-Code/qrcodescanner/main/Allan%20Gray%20Makers_Logo_small.png" class="logo">
         <br>
         <h1>QR Code Scanner</h1>
+        <h2 id="totalAttendance" class="total-attendance"></h2> <!-- New div for Total Attendance -->
+        <br>
         <button id="startButton" onclick="startScan()">Start</button>
         <button id="quitButton" onclick="stopScan()">Stop</button>
-        <br>
         <br>
         <div id="message"></div>
     </div>
 
     <script>
 
+        function updateTotalAttendance(totalAttendance) {
+            document.getElementById("totalAttendance").innerText = "Total Attendance = " + totalAttendance;
+        }
 
         function startScan() {
             fetch("/start_scan")
@@ -50,11 +54,12 @@
         }
 
         function updateMessage(message) {
-            document.getElementById("message").innerText = message;
+            let messageDiv = document.getElementById("message");
+            messageDiv.innerHTML = message;
         }
 
-        // Function to continuously update message
-        function updateMessageContinuously() {
+        // Function to continuously update message and total scans
+        function updateDataContinuously() {
             setInterval(() => {
                 fetch("/get_message")
                 .then(response => response.text())
@@ -64,10 +69,20 @@
                 .catch(error => {
                     console.error("Error:", error);
                 });
-            }, 1000); // Update message every second
+
+                // Fetch total attendance
+                fetch("/get_total_attendance")
+                .then(response => response.json())
+                .then(data => {
+                    updateTotalAttendance(data.totalAttendance);
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+            }, 1000); // Update data every second
         }
 
-        updateMessageContinuously(); // Start continuous message updating
+        updateDataContinuously(); // Start continuous data updating
     </script>
 </body>
 </html>
