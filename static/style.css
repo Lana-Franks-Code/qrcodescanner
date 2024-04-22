@@ -26,6 +26,11 @@ h1 {
     font-size: 60px;
 }
 
+#totalAttendance {
+    color: #929497;
+    font-size: 30px;
+}
+
 #message {
     color: white;
     font-size: 40px;
@@ -95,3 +100,4 @@ button {
         font-size: 20px; /* Adjust font size for smaller screens */
     }
 }
+
