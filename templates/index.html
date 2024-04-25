@@ -11,20 +11,16 @@
         <img src="https://raw.githubusercontent.com/Lana-Franks-Code/qrcodescanner/main/Allan%20Gray%20Makers_Logo_small.png" class="logo">
         <br>
         <h1>QR Code Scanner</h1>
-        <h2 id="totalAttendance" class="total-attendance"></h2> <!-- New div for Total Attendance -->
-        <br>
+        <div id="totalAttendance"></div> <!-- Add a div to display total attendance -->
         <button id="startButton" onclick="startScan()">Start</button>
         <button id="quitButton" onclick="stopScan()">Stop</button>
         <br>
+        <br>
         <div id="message"></div>
+
     </div>
 
     <script>
-
-        function updateTotalAttendance(totalAttendance) {
-            document.getElementById("totalAttendance").innerText = "Total Attendance = " + totalAttendance;
-        }
-
         function startScan() {
             fetch("/start_scan")
             .then(response => {
@@ -54,11 +50,14 @@
         }
 
         function updateMessage(message) {
-            let messageDiv = document.getElementById("message");
-            messageDiv.innerHTML = message;
+            document.getElementById("message").innerText = message;
         }
 
-        // Function to continuously update message and total scans
+        function updateTotalAttendance(totalAttendance) {
+            document.getElementById("totalAttendance").innerText = "Total Attendance: " + totalAttendance;
+        }
+
+        // Function to continuously update message and total attendance
         function updateDataContinuously() {
             setInterval(() => {
                 fetch("/get_message")
