@@ -83,7 +83,7 @@ def update_attendance(name):
 # Function to continuously scan for QR codes
 def scan_qr():
     global scanning_active, message
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(-1)
     while scanning_active:
         ret, frame = cap.read()
         decoded_objects = decode(frame)
