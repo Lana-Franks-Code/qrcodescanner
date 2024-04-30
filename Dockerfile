@@ -1,14 +1,19 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.10-slim-buster
+FROM python:3.8-slim-buster
 
-# Inside Container
-# make a new folder inside container
 WORKDIR /pythonProject14
 
-COPY requirements.txt requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt
+
+RUN apt-get update && apt-get install libzbar0 -y && pip install pyzbar && apt-get install v4l-utils
 
 COPY . .
 
-CMD ["gunicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]
+EXPOSE 5000
+
+ENV FLASK_APP=main.py
+
+CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
